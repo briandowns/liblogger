@@ -1,0 +1,11 @@
+[package]
+name = "liblogger"
+type = "lib"
+build = "make"
+repository = "https://github.com/briandowns/liblogger"
+version = "0.1.0"
+description = "A simple JSON structured logger for C applications."
+homepage = ""
+authors = ["Brian Downs"]
+
+[dependencies]
