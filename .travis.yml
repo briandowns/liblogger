@@ -1,6 +1,6 @@
 language: c
 before_install: 
-    - apt-get install libjson-c-dev
+    - sudo apt-get install libjson-c-dev
 compiler:
     - clang
     - gcc
