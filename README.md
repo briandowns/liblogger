@@ -25,10 +25,10 @@ make example
 
 int main(int argc, char **argv) {
     log_init(stdout);
-    log(log_INFO, "msg", log_string("records added successfully"), "count", log_int(2));
-    log(log_INFO, "msg", log_string("records added successfully"), "count", log_int64(9223372036854775807));
-    log(log_INFO, "msg", log_string("records added partially"), "count", log_int64(3.14));
-    log(log_INFO, "msg", log_string("record added successfully"), "name", log_string("Brian"), "elapsed", log_double(5.76)); 
+    log(log_INFO, log_string("msg", "records added successfully"), log_int("count", 2));
+    log(log_INFO, log_string("msg", "records added successfully"), log_int64("count", 9223372036854775807));
+    log(log_INFO, log_string("msg", "records added partially"), log_int64("count", 3.14));
+    log(log_INFO, log_string("msg", "record added successfully"), log_string("name", "Brian"), log_double("elapsed", 5.76)); 
 }
 ```
 
@@ -50,7 +50,7 @@ if (f == NULL) {
     return 1;
 }
 log_init(f);
-log(log_INFO, "msg", log_string("records added successfully"), "count", log_int(2));
+log(log_INFO, log_string("msg", "records added successfully"), log_int("count", 2));
 fclose(f);
 ```
 
