@@ -1,6 +1,6 @@
 CC = cc
 
-CFLAGS  = -std=c17 -O3 -Wall 
+CFLAGS  = -std=c99 -O3 -Wall 
 LDFLAGS = -ljson-c
 
 NAME = liblogger
