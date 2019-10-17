@@ -2,11 +2,11 @@
 
 [![Build Status](https://travis-ci.org/briandowns/liblogger.svg?branch=master)](https://travis-ci.org/briandowns/liblogger)
 
-liblogger is a simple JSON logger for C applications.
+liblogger is a simple JSON logger in C.
 
 ## Use
 
-To use this library, call the `log` macro. This macro takes a log level, a string key, and a log value. The values supported are int, int64, double, and string. To use one of those as a value, the value needs to be passed as a parameter to one of the associated functions. Ie `log_int64(6789)`.
+To use this library, call the `log` macro. This macro takes a log level, any number of `log_field_t` pointers containing a string key, and a log value. The values supported are `int`, `int64`, `double`, and `string`.
 
 For a successful log entry to be made, a key and a value need to be provided. If no value is provided, that field will not be logged.
 
@@ -23,12 +23,14 @@ make example
 
 #include "logger.h"
 
-int main(int argc, char **argv) {
+int
+main(int argc, char **argv)
+{
     log_init(stdout);
-    log(log_INFO, "msg", log_string("records added successfully"), "count", log_int(2));
-    log(log_INFO, "msg", log_string("records added successfully"), "count", log_int64(9223372036854775807));
-    log(log_INFO, "msg", log_string("records added partially"), "count", log_int64(3.14));
-    log(log_INFO, "msg", log_string("record added successfully"), "name", log_string("Brian"), "elapsed", log_double(5.76)); 
+    log(log_INFO, log_string("msg", "records added successfully"), log_int("count", 2));
+    log(log_INFO, log_string("msg", "records added successfully"), log_int64("count", 9223372036854775807));
+    log(log_INFO, log_string("msg", "records added partially"), log_int64("count", 3.14));
+    log(log_INFO, log_string("msg", "record added successfully"), log_string("name", "Brian"), log_double("elapsed", 5.76)); 
 }
 ```
 
@@ -50,7 +52,7 @@ if (f == NULL) {
     return 1;
 }
 log_init(f);
-log(log_INFO, "msg", log_string("records added successfully"), "count", log_int(2));
+log(log_INFO, log_string("msg", "records added successfully"), log_int("count", 2));
 fclose(f);
 ```
 
@@ -66,4 +68,4 @@ Brian Downs [@bdowns328](http://twitter.com/bdowns328)
 
 ## License
 
-Apache [License](/LICENSE).
+BSD 2 Clause [License](/LICENSE).
