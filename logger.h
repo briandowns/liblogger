@@ -35,8 +35,8 @@
 
 #define LOG_TRACE "trace"
 #define LOG_DEBUG "debug"
-#define LOG_INFO "info"
-#define LOG_WARN "warn"
+#define LOG_INFO  "info"
+#define LOG_WARN  "warn"
 #define LOG_ERROR "error"
 #define LOG_FATAL "fatal"
 
@@ -71,7 +71,7 @@ struct log_field_t {
         int16_t int16_value;
         int32_t int32_value;
         int64_t int64_value;
-        int uint_value;
+        unsigned int uint_value;
         uint8_t uint8_value;
         uint16_t uint16_value;
         uint32_t uint32_value;
