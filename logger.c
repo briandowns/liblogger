@@ -87,10 +87,82 @@ log_int(const char *key, const int value)
 }
 
 struct log_field_t*
+log_int8(const char *key, const int8_t value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_INT8;
+    field->int8_value = value;
+    return field;
+}
+
+struct log_field_t*
+log_int16(const char *key, const int16_t value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_INT16;
+    field->int16_value = value;
+    return field;
+}
+
+struct log_field_t*
+log_int32(const char *key, const int32_t value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_INT32;
+    field->int32_value = value;
+    return field;
+}
+
+struct log_field_t*
 log_int64(const char *key, const int64_t value)
 {
     struct log_field_t *field = log_field_new(key);
     field->type = LOG_INT64;
+    field->int64_value = value;
+    return field;
+}
+
+struct log_field_t*
+log_uint(const char *key, const unsigned int value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_UINT;
+    field->int_value = value;
+    return field;
+}
+
+struct log_field_t*
+log_uint8(const char *key, const uint8_t value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_UINT8;
+    field->int8_value = value;
+    return field;
+}
+
+struct log_field_t*
+log_uint16(const char *key, const uint16_t value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_UINT16;
+    field->int16_value = value;
+    return field;
+}
+
+struct log_field_t*
+log_uint32(const char *key, const uint32_t value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_UINT32;
+    field->int32_value = value;
+    return field;
+}
+
+struct log_field_t*
+log_uint64(const char *key, const uint64_t value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_UINT64;
     field->int64_value = value;
     return field;
 }
