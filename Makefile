@@ -42,6 +42,9 @@ ifeq ($(UNAME_S),Darwin)
 	rm -f $(INCDIR)/$(NAME).dylib
 endif
 
+example:
+	$(CC) -o $@ example.c logger.c $(CFLAGS) $(LDFLAGS)
+
 .PHONY:
 test: clean
 	$(CC) -o $(TSTDIR)/$(TSTDIR) $(TSTDIR)/$(TSTDIR).c logger.c $(TSTDIR)/unity/unity.c $(CFLAGS) $(LDFLAGS)
