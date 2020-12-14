@@ -1,7 +1,7 @@
 /*-
  * SPDX-License-Identifier: BSD-2-Clause
  *
- * Copyright (c) 2019 Brian J. Downs
+ * Copyright (c) 2020 Brian J. Downs
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -45,7 +45,15 @@
  */
 static enum { 
     LOG_INT, 
-    LOG_INT64, 
+    LOG_INT8,
+    LOG_INT16,
+    LOG_INT32,
+    LOG_INT64,
+    LOG_UINT, 
+    LOG_UINT8,
+    LOG_UINT16,
+    LOG_UINT32,
+    LOG_UINT64,
     LOG_DOUBLE, 
     LOG_STRING
 } log_field_types;
@@ -59,6 +67,9 @@ struct log_field_t {
     char *key;
     union {
         int int_value;
+        int8_t int8_value;
+        int16_t int16_value;
+        int32_t int32_value;
         int64_t int64_value;
         double double_value;
         char *char_value;
@@ -72,6 +83,26 @@ struct log_field_t {
 struct log_field_t*
 log_int(const char *key, const int value);
 
+/**
+ * log_int8 is used to add a 8 bit integer
+ * value to the log entry.
+ */
+struct log_field_t*
+log_int8(const char *key, const int8_t value);
+
+/**
+ * log_int16 is used to add a 16 bit integer
+ * value to the log entry.
+ */
+struct log_field_t*
+log_int16(const char *key, const int16_t value);
+
+/**
+ * log_int32 is used to add a 32 bit integer
+ * value to the log entry.
+ */
+struct log_field_t*
+log_int32(const char *key, const int32_t value);
 /**
  * log_int64 is used to add a 64 bit integer
  * value to the log entry.

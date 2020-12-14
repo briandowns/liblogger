@@ -1,7 +1,7 @@
 /*-
  * SPDX-License-Identifier: BSD-2-Clause
  *
- * Copyright (c) 2019 Brian J. Downs
+ * Copyright (c) 2020 Brian J. Downs
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -83,6 +83,33 @@ log_int(const char *key, const int value)
     struct log_field_t *field = log_field_new(key);
     field->type = LOG_INT;
     field->int_value = value;
+    return field;
+}
+
+struct log_field_t*
+log_int8(const char *key, const int8_t value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_INT8;
+    field->int8_value = value;
+    return field;
+}
+
+struct log_field_t*
+log_int16(const char *key, const int16_t value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_INT16;
+    field->int16_value = value;
+    return field;
+}
+
+struct log_field_t*
+log_int32(const char *key, const int32_t value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_INT32;
+    field->int32_value = value;
     return field;
 }
 
