@@ -123,6 +123,51 @@ log_int64(const char *key, const int64_t value)
 }
 
 struct log_field_t*
+log_uint(const char *key, const unsigned int value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_UINT;
+    field->int_value = value;
+    return field;
+}
+
+struct log_field_t*
+log_uint8(const char *key, const uint8_t value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_UINT8;
+    field->int8_value = value;
+    return field;
+}
+
+struct log_field_t*
+log_uint16(const char *key, const uint16_t value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_UINT16;
+    field->int16_value = value;
+    return field;
+}
+
+struct log_field_t*
+log_uint32(const char *key, const uint32_t value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_UINT32;
+    field->int32_value = value;
+    return field;
+}
+
+struct log_field_t*
+log_uint64(const char *key, const uint64_t value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_UINT64;
+    field->int64_value = value;
+    return field;
+}
+
+struct log_field_t*
 log_double(const char *key, const double value)
 {
     struct log_field_t *field = log_field_new(key);
