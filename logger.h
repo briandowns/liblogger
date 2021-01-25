@@ -355,6 +355,10 @@ reallog(char* l, ...)
     int wc = fprintf(log_output, "%s\n", json_object_to_json_string(root));
     json_object_put(root); // decrement the count on the JSON object
 
+    if (strcmp(l, LOG_FATAL) == 0) {
+        exit(1);
+    }
+
     return wc;
 }
 

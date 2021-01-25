@@ -16,4 +16,5 @@ main(int argc, char **argv)
         log_string("msg", "record added successfully"), 
         log_string("name", "Brian"), 
         log_double("elapsed", 5.76));
+    log(LOG_FATAL, log_string("msg", "dead :("));   
 }
