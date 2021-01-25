@@ -13,11 +13,11 @@ LIBDIR  = /usr/local/lib
 
 ifeq ($(UNAME_S),Linux)
 $(NAME).so:
-	$(CC) -shared -o $@ logger.c $(CFLAGS) $(LDFLAGS)
+	$(CC) -shared -o $@ $(CFLAGS) $(LDFLAGS)
 endif
 ifeq ($(UNAME_S),Darwin)
 $(NAME).dylib:
-	$(CC) -c -dynamiclib -o $@ logger.c $(CFLAGS) $(LDFLAGS)
+	$(CC) -c -dynamiclib -o $@ $(CFLAGS) $(LDFLAGS)
 endif
 
 .PHONY: install
@@ -43,11 +43,11 @@ ifeq ($(UNAME_S),Darwin)
 endif
 
 example:
-	$(CC) -o $@ example.c logger.c $(CFLAGS) $(LDFLAGS)
+	$(CC) -o $@ example.c $(CFLAGS) $(LDFLAGS)
 
 .PHONY:
 test: clean
-	$(CC) -o $(TSTDIR)/$(TSTDIR) $(TSTDIR)/$(TSTDIR).c logger.c $(TSTDIR)/unity/unity.c $(CFLAGS) $(LDFLAGS)
+	$(CC) -o $(TSTDIR)/$(TSTDIR) $(TSTDIR)/$(TSTDIR).c $(TSTDIR)/unity/unity.c $(CFLAGS) $(LDFLAGS)
 	$(TSTDIR)/$(TSTDIR)
 	rm -f $(TSTDIR)/$(TSTDIR)
 

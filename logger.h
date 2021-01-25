@@ -1,7 +1,7 @@
 /*-
  * SPDX-License-Identifier: BSD-2-Clause
  *
- * Copyright (c) 2020 Brian J. Downs
+ * Copyright (c) 2021 Brian J. Downs
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -32,6 +32,10 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+#include <json-c/json.h>
 
 #define LOG_TRACE "trace"
 #define LOG_DEBUG "debug"
@@ -82,104 +86,15 @@ struct log_field_t {
 } log_field_t;
 
 /**
- * log_int is used to add an integer value
- * to the log entry.
- */
-struct log_field_t*
-log_int(const char *key, const int value);
-
-/**
- * log_int8 is used to add a 8 bit integer
- * value to the log entry.
- */
-struct log_field_t*
-log_int8(const char *key, const int8_t value);
-
-/**
- * log_int16 is used to add a 16 bit integer
- * value to the log entry.
- */
-struct log_field_t*
-log_int16(const char *key, const int16_t value);
-
-/**
- * log_int32 is used to add a 32 bit integer
- * value to the log entry.
- */
-struct log_field_t*
-log_int32(const char *key, const int32_t value);
-/**
- * log_int64 is used to add a 64 bit integer
- * value to the log entry.
- */
-struct log_field_t*
-log_int64(const char *key, const int64_t value);
-
-/**
- * log_uint is used to add an unsigned integer value
- * to the log entry.
- */
-struct log_field_t*
-log_uint(const char *key, const unsigned int value);
-
-/**
- * log_uint8 is used to add a 8 bit integer
- * value to the log entry.
- */
-struct log_field_t*
-log_uint8(const char *key, const uint8_t value);
-
-/**
- * log_uint16 is used to add a 16 bit integer
- * value to the log entry.
- */
-struct log_field_t*
-log_uint16(const char *key, const uint16_t value);
-
-/**
- * log_uint32 is used to add a 32 bit integer
- * value to the log entry.
- */
-struct log_field_t*
-log_uint32(const char *key, const uint32_t value);
-/**
- * log_uint64 is used to add a 64 bit integer
- * value to the log entry.
- */
-struct log_field_t*
-log_uint64(const char *key, const uint64_t value);
-
-/**
- * log_double is used to add a double to the
- * log entry.
- */
-struct log_field_t*
-log_double(const char *key, const double value);
-
-/**
- * log_string is used to add a string to the
- * log entry.
- */
-struct log_field_t*
-log_string(const char *key, const char *value);
-
-/**
  * log_output contains the location we're
  * going to write our log entries to
  */
-FILE *log_output;
+static FILE *log_output;
 
 enum {
     LOG_OUT_STDERR,
     LOG_OUT_STDOUT,
 };
-
-/**
- * log_init initializes the logger and sets up
- * where the logger writes to.
- */
-void
-log_init(FILE *out);
 
 /**
  * reallog provides the functionality of the logger. Returns
@@ -193,5 +108,254 @@ reallog(char *l, ...);
  * to the logger to create log entries
  */
 #define log(l, ...) ({ reallog(l, __VA_ARGS__, NULL); })
+
+/**
+ * log_init initializes the logger and sets up
+ * where the logger writes to.
+ */
+void
+log_init(FILE *out)
+{
+    log_output = out;
+}
+
+/**
+ * log_field_new allocates memory for a new log field,
+ * sets the memory to 0, and returns a pointer to it.
+ */
+static struct log_field_t*
+log_field_new(const char *key)
+{
+    struct log_field_t *field = malloc(sizeof(log_field_t));
+    if (field == NULL) {
+        perror("unable to allocation memory for new field");
+        return NULL;
+    }
+    memset(field, 0, sizeof(log_field_t));
+    field->key = malloc(strlen(key)+1);
+    strcpy(field->key, key);
+    return field;
+}
+
+/**
+ * log_field_free frees the memory used by the log_field_t.
+ * struct.
+ */
+static void
+log_field_free(struct log_field_t *sf)
+{
+    if (sf != NULL) {
+        if (sf->key != NULL) {
+            free(sf->key);
+        }
+        if ((sf->type == LOG_STRING) && (sf->char_value != NULL)) {
+            free(sf->char_value);
+        }
+        free(sf);
+    }
+}
+
+/**
+ * log_int is used to add an integer value
+ * to the log entry.
+ */
+struct log_field_t*
+log_int(const char *key, const int value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_INT;
+    field->int_value = value;
+    return field;
+}
+
+/**
+ * log_int8 is used to add a 8 bit integer
+ * value to the log entry.
+ */
+struct log_field_t*
+log_int8(const char *key, const int8_t value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_INT8;
+    field->int8_value = value;
+    return field;
+}
+
+/**
+ * log_int16 is used to add a 16 bit integer
+ * value to the log entry.
+ */
+struct log_field_t*
+log_int16(const char *key, const int16_t value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_INT16;
+    field->int16_value = value;
+    return field;
+}
+
+/**
+ * log_int32 is used to add a 32 bit integer
+ * value to the log entry.
+ */
+struct log_field_t*
+log_int32(const char *key, const int32_t value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_INT32;
+    field->int32_value = value;
+    return field;
+}
+
+/**
+ * log_int64 is used to add a 64 bit integer
+ * value to the log entry.
+ */
+struct log_field_t*
+log_int64(const char *key, const int64_t value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_INT64;
+    field->int64_value = value;
+    return field;
+}
+
+/**
+ * log_uint is used to add an unsigned integer value
+ * to the log entry.
+ */
+struct log_field_t*
+log_uint(const char *key, const unsigned int value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_UINT;
+    field->int_value = value;
+    return field;
+}
+
+/**
+ * log_uint8 is used to add a 8 bit integer
+ * value to the log entry.
+ */
+struct log_field_t*
+log_uint8(const char *key, const uint8_t value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_UINT8;
+    field->int8_value = value;
+    return field;
+}
+
+/**
+ * log_uint16 is used to add a 16 bit integer
+ * value to the log entry.
+ */
+struct log_field_t*
+log_uint16(const char *key, const uint16_t value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_UINT16;
+    field->int16_value = value;
+    return field;
+}
+
+/**
+ * log_uint32 is used to add a 32 bit integer
+ * value to the log entry.
+ */
+struct log_field_t*
+log_uint32(const char *key, const uint32_t value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_UINT32;
+    field->int32_value = value;
+    return field;
+}
+
+/**
+ * log_uint64 is used to add a 64 bit integer
+ * value to the log entry.
+ */
+struct log_field_t*
+log_uint64(const char *key, const uint64_t value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_UINT64;
+    field->int64_value = value;
+    return field;
+}
+
+/**
+ * log_double is used to add a double to the
+ * log entry.
+ */
+struct log_field_t*
+log_double(const char *key, const double value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_DOUBLE;
+    field->double_value = value;
+    return field;
+}
+
+/**
+ * log_string is used to add a string to the
+ * log entry.
+ */
+struct log_field_t*
+log_string(const char *key, const char *value)
+{
+    struct log_field_t *field = log_field_new(key);
+    field->type = LOG_STRING;
+    field->char_value = malloc(strlen(value) + 1);
+    strcpy(field->char_value, value);
+    return field;
+}
+
+#define JSON_OBJECT_ADD(x) json_object_object_add(root, arg->key, (x)
+
+int
+reallog(char* l, ...)
+{
+    va_list ap;
+
+    unsigned long now = (unsigned long)time(NULL); // UNIX timestamp format
+
+    struct json_object *root = json_object_new_object();
+    json_object_object_add(root, "timestamp", json_object_new_int64(now));
+    json_object_object_add(root, "level", json_object_new_string(l));
+
+    va_start(ap, l);
+
+    for (int i = 1;; i++) {
+        struct log_field_t *arg = va_arg(ap, struct log_field_t*);
+        if (arg == NULL) {
+            break;
+        }
+
+        switch (arg->type) {
+            case LOG_INT:
+                JSON_OBJECT_ADD(json_object_new_int(arg->int_value)));
+                break;
+            case LOG_INT64:
+                JSON_OBJECT_ADD(json_object_new_int64(arg->int64_value)));
+                break;
+            case LOG_DOUBLE:
+                JSON_OBJECT_ADD(json_object_new_double(arg->double_value)));
+                break;
+            case LOG_STRING:
+                JSON_OBJECT_ADD(json_object_new_string(arg->char_value)));
+        }
+        log_field_free(arg);
+        continue;
+    }
+
+    va_end(ap);
+
+    int wc = fprintf(log_output, "%s\n", json_object_to_json_string(root));
+    json_object_put(root); // decrement the count on the JSON object
+
+    return wc;
+}
 
 #endif /* end _LOGGER_H */
