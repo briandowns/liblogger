@@ -45,7 +45,7 @@
 #define LOG_FATAL "fatal"
 
 /**
- * log field types is an enum of the supported log field types.
+ * log_field_types is an enum of the supported log field types.
  */
 static enum { 
     LOG_INT, 
@@ -126,13 +126,14 @@ log_init(FILE *out)
 static struct log_field_t*
 log_field_new(const char *key)
 {
-    struct log_field_t *field = malloc(sizeof(log_field_t));
+    struct log_field_t *field = 
+        (struct log_field_t *)malloc(sizeof(log_field_t));
     if (field == NULL) {
         perror("unable to allocation memory for new field");
         return NULL;
     }
     memset(field, 0, sizeof(log_field_t));
-    field->key = malloc(strlen(key)+1);
+    field->key = (char *)malloc(strlen(key)+1);
     strcpy(field->key, key);
     return field;
 }
@@ -307,7 +308,7 @@ log_string(const char *key, const char *value)
 {
     struct log_field_t *field = log_field_new(key);
     field->type = LOG_STRING;
-    field->char_value = malloc(strlen(value) + 1);
+    field->char_value = (char *)malloc(strlen(value) + 1);
     strcpy(field->char_value, value);
     return field;
 }
@@ -350,7 +351,7 @@ reallog(char* l, ...)
         continue;
     }
 
-    va_end(ap);
+    va_end(ap); 
 
     int wc = fprintf(log_output, "%s\n", json_object_to_json_string(root));
     json_object_put(root); // decrement the count on the JSON object
@@ -362,4 +363,4 @@ reallog(char* l, ...)
     return wc;
 }
 
-#endif /* end _LOGGER_H */
+#endif /** end _LOGGER_H */
