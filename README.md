@@ -63,10 +63,6 @@ Write to a log file:
 
 ```c
 FILE *f = fopen("file.log", "w");
-if (f == NULL) {
-    perror("couldn't open file.log");
-    return 1;
-}
 log_init(f);
 log(log_INFO, log_string("msg", "records added successfully"), log_uint8("count", 2));
 fclose(f);
