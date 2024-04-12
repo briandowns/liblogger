@@ -21,6 +21,5 @@ jobs:
     - name: Install Dependencies
       run: sudo apt install -y libjson-c-dev make build-essential
     - name: Compile and test
-      run: make && \
-           make test && \
-           make example
+      run: |
+        make && make test && make example
