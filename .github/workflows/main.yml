@@ -14,9 +14,9 @@ jobs:
         - name: checkout repo
           uses: actions/checkout@main
         - name: Install Dependency
-          run: apt update && \
-               apt upgrade -y && \
-               apt install -y libjson-c-dev && \
+          run: sudo apt update && \
+               sudo apt upgrade -y && \
+               sudo apt install -y libjson-c-dev && \
                make && \
                make test && \
                make example
