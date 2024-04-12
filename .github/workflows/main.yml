@@ -13,8 +13,10 @@ jobs:
     steps:
     - name: Checkout repo
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
     - name: Install Dependencies
-      run: sudo apt install -y libjson-c-dev build-essential
+      run: sudo apt install -y libjson-c-dev make build-essential
     - name: Compile and test
       run: make && \
             make test && \
