@@ -11,12 +11,11 @@ jobs:
     name: Tests and Example
     runs-on: ubuntu-latest
     steps:
-        - name: checkout repo
+        - name: Checkout repo
           uses: actions/checkout@main
         - name: Install Dependency
-          run: sudo apt update && \
-               sudo apt upgrade -y && \
-               sudo apt install -y libjson-c-dev && \
-               make && \
+          run: sudo apt install -y libjson-c-dev
+        - name: Compile and test
+          run: make && \
                make test && \
                make example
