@@ -7,23 +7,23 @@
 void
 test_log_init(void)
 {
-    log_init(stderr);
+    s_log_init(stderr);
     TEST_ASSERT_NOT_NULL(log_output);
 }
 
 void
 test_log_two_fields(void)
 {
-    log_init(stdout);
-    int wc = log(LOG_INFO, log_string("msg", "records added successfully"), log_int("count", 2));
+    s_log_init(stdout);
+    int wc = s_log(LOG_INFO, s_log_string("msg", "records added successfully"), s_log_int("count", 2));
     TEST_ASSERT_EQUAL_INT(94, wc);
 }
 
 void
 test_log_three_fields(void)
 {
-    log_init(stdout);
-    int wc = log(LOG_DEBUG, log_string("field1", "value1"), log_double("field2", 3.14), log_int64("field3", 89));
+    s_log_init(stdout);
+    int wc = s_log(LOG_DEBUG, s_log_string("field1", "value1"), s_log_double("field2", 3.14), s_log_int64("field3", 89));
     TEST_ASSERT_GREATER_OR_EQUAL(100, wc);
 }
 

@@ -17,7 +17,7 @@ $(NAME).so:
 endif
 ifeq ($(UNAME_S),Darwin)
 $(NAME).dylib:
-	$(CC) -c -dynamiclib -o $@ $(CFLAGS) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -c -dynamiclib -o $@ 
 endif
 
 .PHONY: install

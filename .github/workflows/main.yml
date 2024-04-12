@@ -1,0 +1,22 @@
+name: CI
+
+on:
+    push:
+        branches: [ master ]
+    pull_request:
+        branches: [ master ]
+
+jobs:
+  run-tests-and-example:
+    name: Tests and Example
+    runs-on: ubuntu-latest
+    steps:
+        - name: checkout repo
+          uses: actions/checkout@main
+        - name: Install Dependency
+          run: apt update && \
+               apt upgrade -y && \
+               apt install -y libjson-c-dev && \
+               make && \
+               make test && \
+               make example
