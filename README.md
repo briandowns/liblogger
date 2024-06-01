@@ -66,7 +66,7 @@ fclose(f);
 
 ## Requirements
 
-* [json-c](https://github.com/json-c/json-c)
+* [jansson](https://github.com/akheron/jansson)
 
 Lots of thanks to [Ayan George](https://github.com/ayang64) for the help with getting this where it is.
 

@@ -35,7 +35,7 @@
 #include <string.h>
 #include <time.h>
 
-#include <json-c/json.h>
+#include <jansson.h>
 
 #define LOG_TRACE "trace"
 #define LOG_DEBUG "debug"
@@ -97,10 +97,9 @@ enum {
 };
 
 /**
- * reallog provides the functionality of the logger. Returns
- * the number os bytes written.
+ * reallog provides the functionality of the logger.
  */
-int
+void
 reallog(char *l, ...);
 
 /**
@@ -313,18 +312,16 @@ s_log_string(const char *key, const char *value)
     return field;
 }
 
-#define JSON_OBJECT_ADD(x) json_object_object_add(root, arg->key, (x)
-
-int
+void
 reallog(char* l, ...)
 {
     va_list ap;
 
     unsigned long now = (unsigned long)time(NULL); // UNIX timestamp format
 
-    struct json_object *root = json_object_new_object();
-    json_object_object_add(root, "timestamp", json_object_new_int64(now));
-    json_object_object_add(root, "level", json_object_new_string(l));
+    json_t *root = json_object();
+    json_object_set_new(root, "timestamp", json_integer(now));
+    json_object_set_new(root, "level", json_string(l));
 
     va_start(ap, l);
 
@@ -335,17 +332,17 @@ reallog(char* l, ...)
         }
 
         switch (arg->type) {
-            case S_LOG_INT:
-                JSON_OBJECT_ADD(json_object_new_int(arg->int_value)));
+            case S_LOG_INT ... S_LOG_UINT64:
+                json_object_set_new(root, arg->key, json_integer(arg->int_value));
                 break;
-            case S_LOG_INT64:
-                JSON_OBJECT_ADD(json_object_new_int64(arg->int64_value)));
-                break;
+            // case S_LOG_INT64:
+            //     json_object_set_new(root, arg->key, json_integer(arg->int64_value));
+            //     break;
             case S_LOG_DOUBLE:
-                JSON_OBJECT_ADD(json_object_new_double(arg->double_value)));
+                json_object_set_new(root, arg->key, json_integer(arg->double_value));
                 break;
             case S_LOG_STRING:
-                JSON_OBJECT_ADD(json_object_new_string(arg->char_value)));
+                json_object_set_new(root, arg->key, json_string(arg->char_value));
         }
 
         s_log_field_free(arg);
@@ -355,14 +352,19 @@ reallog(char* l, ...)
 
     va_end(ap); 
 
-    int wc = fprintf(log_output, "%s\n", json_object_to_json_string(root));
-    json_object_put(root); // decrement the count on the JSON object
+    int res = json_dumpf(root, log_output, JSON_INDENT(0));
+    if (res != 0) {
+        // error handler...
+    }
+    fprintf(log_output, "\n");
+
+    json_decref(root);
 
     if (strcmp(l, LOG_FATAL) == 0) {
         exit(1);
     }
 
-    return wc;
+    return;
 }
 
 #endif /** end _S_LOGGER_H */
