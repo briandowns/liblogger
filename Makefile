@@ -1,7 +1,7 @@
 CC = cc
 
 CFLAGS  = -std=c99 -O3 -Wall 
-LDFLAGS = -ljson-c
+LDFLAGS = -ljansson
 
 NAME = liblogger
 
