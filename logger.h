@@ -335,11 +335,8 @@ reallog(char* l, ...)
             case S_LOG_INT ... S_LOG_UINT64:
                 json_object_set_new(root, arg->key, json_integer(arg->int_value));
                 break;
-            // case S_LOG_INT64:
-            //     json_object_set_new(root, arg->key, json_integer(arg->int64_value));
-            //     break;
             case S_LOG_DOUBLE:
-                json_object_set_new(root, arg->key, json_integer(arg->double_value));
+                json_object_set_new(root, arg->key, json_real(arg->double_value));
                 break;
             case S_LOG_STRING:
                 json_object_set_new(root, arg->key, json_string(arg->char_value));
