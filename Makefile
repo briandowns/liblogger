@@ -43,7 +43,7 @@ ifeq ($(UNAME_S),Darwin)
 endif
 
 example:
-	$(CC) -o $@ example.c $(CFLAGS) $(LDFLAGS)
+	$(CC) -o $@ logger.c example.c $(CFLAGS) $(LDFLAGS)
 
 .PHONY:
 test: clean

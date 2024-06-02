@@ -4,7 +4,7 @@ liblogger is a simple JSON logger in C.
 
 ## Use
 
-To use this single-header library, call the `s_log` macro. This macro takes a log level, any number of `s_log_field_t` pointers containing a string key and a log value. 
+To use this library, initialize the logger with `s_log_init()` and call the `s_log` macro. The latter macro takes a log level, any number of `s_log_field_t` pointers containing a string key and a log value. 
 
 The supported int values are:  `int`, `int8`, `int16`, `int32`, `int64`
 The supported uint values are: `uint`, `uint8`, `uint16`, `uint32`, `uint64`
