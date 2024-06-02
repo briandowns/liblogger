@@ -296,8 +296,8 @@ reallog(char* l, ...)
     unsigned long now = (unsigned long)time(NULL); // UNIX timestamp format
 
     json_t *root = json_object();
-    json_object_set_new(root, "timestamp", json_integer(now));
     json_object_set_new(root, "level", json_string(l));
+    json_object_set_new(root, "timestamp", json_integer(now));
 
     va_start(ap, l);
 
