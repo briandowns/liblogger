@@ -49,5 +49,4 @@ example: clean
 clean:
 	rm -f $(NAME).dylib
 	rm -f $(NAME).so
-	rm -f $(TSTDIR)/$(TSTDIR)
 	rm -f example
