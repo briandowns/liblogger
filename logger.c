@@ -102,14 +102,15 @@ static struct s_log_field_t*
 s_log_field_new(const char *key)
 {
     struct s_log_field_t *field =
-        (struct s_log_field_t *)malloc(sizeof(s_log_field_t));
+        (struct s_log_field_t *)calloc(1, sizeof(s_log_field_t));
     if (field == NULL) {
         perror("unable to allocate memory for new field");
         return NULL;
     }
-    memset(field, 0, sizeof(s_log_field_t));
-    field->key = (char *)malloc(strlen(key)+1);
+
+    field->key = (char *)calloc(1, strlen(key)+1);
     strcpy(field->key, key);
+
     return field;
 }
 
@@ -124,9 +125,11 @@ s_log_field_free(struct s_log_field_t *sf)
         if (sf->key != NULL) {
             free(sf->key);
         }
+
         if ((sf->type == S_LOG_STRING) && (sf->char_value != NULL)) {
             free(sf->char_value);
         }
+
         free(sf);
     }
 }
@@ -141,6 +144,7 @@ s_log_int(const char *key, const int value)
     struct s_log_field_t *field = s_log_field_new(key);
     field->type = S_LOG_INT;
     field->int_value = value;
+
     return field;
 }
 
@@ -154,6 +158,7 @@ s_log_int8(const char *key, const int8_t value)
     struct s_log_field_t *field = s_log_field_new(key);
     field->type = S_LOG_INT8;
     field->int8_value = value;
+
     return field;
 }
 
@@ -167,6 +172,7 @@ s_log_int16(const char *key, const int16_t value)
     struct s_log_field_t *field = s_log_field_new(key);
     field->type = S_LOG_INT16;
     field->int16_value = value;
+
     return field;
 }
 
@@ -180,6 +186,7 @@ s_log_int32(const char *key, const int32_t value)
     struct s_log_field_t *field = s_log_field_new(key);
     field->type = S_LOG_INT32;
     field->int32_value = value;
+
     return field;
 }
 
@@ -193,6 +200,7 @@ s_log_int64(const char *key, const int64_t value)
     struct s_log_field_t *field = s_log_field_new(key);
     field->type = S_LOG_INT64;
     field->int64_value = value;
+
     return field;
 }
 
@@ -206,6 +214,7 @@ s_log_uint(const char *key, const unsigned int value)
     struct s_log_field_t *field = s_log_field_new(key);
     field->type = S_LOG_UINT;
     field->int_value = value;
+
     return field;
 }
 
@@ -219,6 +228,7 @@ s_log_uint8(const char *key, const uint8_t value)
     struct s_log_field_t *field = s_log_field_new(key);
     field->type = S_LOG_UINT8;
     field->int8_value = value;
+
     return field;
 }
 
@@ -232,6 +242,7 @@ s_log_uint16(const char *key, const uint16_t value)
     struct s_log_field_t *field = s_log_field_new(key);
     field->type = S_LOG_UINT16;
     field->int16_value = value;
+
     return field;
 }
 
@@ -245,6 +256,7 @@ s_log_uint32(const char *key, const uint32_t value)
     struct s_log_field_t *field = s_log_field_new(key);
     field->type = S_LOG_UINT32;
     field->int32_value = value;
+
     return field;
 }
 
@@ -258,6 +270,7 @@ s_log_uint64(const char *key, const uint64_t value)
     struct s_log_field_t *field = s_log_field_new(key);
     field->type = S_LOG_UINT64;
     field->int64_value = value;
+
     return field;
 }
 
@@ -271,6 +284,7 @@ s_log_double(const char *key, const double value)
     struct s_log_field_t *field = s_log_field_new(key);
     field->type = S_LOG_DOUBLE;
     field->double_value = value;
+
     return field;
 }
 
@@ -283,8 +297,9 @@ s_log_string(const char *key, const char *value)
 {
     struct s_log_field_t *field = s_log_field_new(key);
     field->type = S_LOG_STRING;
-    field->char_value = (char *)malloc(strlen(value) + 1);
+    field->char_value = (char *)calloc(1, strlen(value) + 1);
     strcpy(field->char_value, value);
+
     return field;
 }
 
@@ -293,7 +308,8 @@ reallog(char* l, ...)
 {
     va_list ap;
 
-    unsigned long now = (unsigned long)time(NULL); // UNIX timestamp format
+    // UNIX timestamp format
+    unsigned long now = (unsigned long)time(NULL);
 
     json_t *root = json_object();
     json_object_set_new(root, "level", json_string(l));
@@ -309,13 +325,16 @@ reallog(char* l, ...)
 
         switch (arg->type) {
             case S_LOG_INT ... S_LOG_UINT64:
-                json_object_set_new(root, arg->key, json_integer(arg->int_value));
+                json_object_set_new(root, arg->key,
+                    json_integer(arg->int_value));
                 break;
             case S_LOG_DOUBLE:
-                json_object_set_new(root, arg->key, json_real(arg->double_value));
+                json_object_set_new(root, arg->key,
+                    json_real(arg->double_value));
                 break;
             case S_LOG_STRING:
-                json_object_set_new(root, arg->key, json_string(arg->char_value));
+                json_object_set_new(root, arg->key,
+                    json_string(arg->char_value));
         }
 
         s_log_field_free(arg);
@@ -333,7 +352,7 @@ reallog(char* l, ...)
 
     json_decref(root);
 
-    if (strcmp(l, LOG_FATAL) == 0) {
+    if (strcmp(l, S_LOG_FATAL) == 0) {
         exit(1);
     }
 }

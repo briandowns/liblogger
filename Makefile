@@ -7,7 +7,7 @@ NAME = liblogger
 
 UNAME_S := $(shell uname -s)
 
-TSTDIR := ./tests
+# respect traditional UNIX path usage
 INCDIR := /usr/local/include
 LIBDIR  = /usr/local/lib
 
@@ -42,14 +42,8 @@ ifeq ($(UNAME_S),Darwin)
 	rm -f $(INCDIR)/$(NAME).dylib
 endif
 
-example:
+example: clean
 	$(CC) -o $@ logger.c example.c $(CFLAGS) $(LDFLAGS)
-
-.PHONY:
-test: clean
-	$(CC) -o $(TSTDIR)/$(TSTDIR) $(TSTDIR)/$(TSTDIR).c $(TSTDIR)/unity/unity.c $(CFLAGS) $(LDFLAGS)
-	$(TSTDIR)/$(TSTDIR)
-	rm -f $(TSTDIR)/$(TSTDIR)
 
 .PHONY: clean
 clean:

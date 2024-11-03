@@ -33,12 +33,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define LOG_TRACE "trace"
-#define LOG_DEBUG "debug"
-#define LOG_INFO  "info"
-#define LOG_WARN  "warn"
-#define LOG_ERROR "error"
-#define LOG_FATAL "fatal"
+#define S_LOG_TRACE "trace"
+#define S_LOG_DEBUG "debug"
+#define S_LOG_INFO  "info"
+#define S_LOG_WARN  "warn"
+#define S_LOG_ERROR "error"
+#define S_LOG_FATAL "fatal"
 
 
 /**
