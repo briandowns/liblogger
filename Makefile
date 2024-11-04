@@ -45,6 +45,9 @@ endif
 example: clean
 	$(CC) -o $@ logger.c example.c $(CFLAGS) $(LDFLAGS)
 
+benchmarks: clean
+	$(CC) -o benchmark-run logger.c benchmarks/benchmark.c $(CFLAGS) $(LDFLAGS)
+
 .PHONY: clean
 clean:
 	rm -f $(NAME).dylib
