@@ -1,6 +1,6 @@
 # liblogger
 
-liblogger is a structured logger for C/C++. The output format is JSON. liblogger supports writing to stdout, stderr, and to a given file.
+liblogger is a structured logger for C/C++. The output format is JSON. liblogger supports writing to stdout, stderr, and to a file.
 
 ## Usage
 
@@ -8,7 +8,7 @@ To use this library, initialize the logger with `s_log_init()` and call the `s_l
 
 The supported int values are:  `int`, `int8`, `int16`, `int32`, `int64`
 The supported uint values are: `uint`, `uint8`, `uint16`, `uint32`, `uint64`
-And`double`, and `string`.
+And `float`, `double`, and `string`.
 
 The supported log levels are: `trace`, `debug`, `info`, `warn`, `error`, `fatal`, 
 

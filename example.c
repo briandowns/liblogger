@@ -8,7 +8,7 @@ main(int argc, char **argv)
     s_log_init(stdout); 
     s_log(S_LOG_INFO, 
         s_log_string("msg", "records added successfully"), 
-        s_log_uint("count", 2));
+        s_log_int("count", 2)); 
     s_log(S_LOG_INFO, 
         s_log_string("msg", "records added successfully"), 
         s_log_int64("count", 9223372036854775807));
