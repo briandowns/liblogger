@@ -19,7 +19,8 @@ jobs:
     - name: Force Pull
       run: git pull origin master
     - name: Install Dependencies
-      run: sudo apt install -y libjansson4 libjansson-dev make build-essential
+      run: |
+        sudo apt update && sudo apt upgrade -y && sudo apt install -y libjansson4 libjansson-dev make build-essential
     - name: Compile and run
       run: |
         make && make example

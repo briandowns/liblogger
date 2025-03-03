@@ -1,7 +1,7 @@
 /*-
  * SPDX-License-Identifier: BSD-2-Clause
  *
- * Copyright (c) 2024 Brian J. Downs
+ * Copyright (c) 2025 Brian J. Downs
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -25,6 +25,10 @@
  * SUCH DAMAGE.
  */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef _S_LOGGER_H
 #define _S_LOGGER_H
 
@@ -40,87 +44,80 @@
 #define S_LOG_ERROR "error"
 #define S_LOG_FATAL "fatal"
 
-
 /**
- * s_log_int is used to add an integer value
- * to the log entry.
+ * s_log_int is used to add an integer value to the log entry.
  */
 struct s_log_field_t*
 s_log_int(const char *key, const int value);
 
 /**
- * s_log_int8 is used to add a 8 bit integer
- * value to the log entry.
+ * s_log_int8 is used to add a 8 bit integer value to the log entry.
  */
 struct s_log_field_t*
 s_log_int8(const char *key, const int8_t value);
 
 /**
- * s_log_int16 is used to add a 16 bit integer
- * value to the log entry.
+ * s_log_int16 is used to add a 16 bit integer value to the log entry.
  */
 struct s_log_field_t*
 s_log_int16(const char *key, const int16_t value);
 
 /**
- * s_log_int32 is used to add a 32 bit integer
- * value to the log entry.
+ * s_log_int32 is used to add a 32 bit integer value to the log entry.
  */
 struct s_log_field_t*
 s_log_int32(const char *key, const int32_t value);
 
 /**
- * s_s_log_int64 is used to add a 64 bit integer
- * value to the log entry.
+ * s_s_log_int64 is used to add a 64 bit integer value to the log entry.
  */
 struct s_log_field_t*
 s_log_int64(const char *key, const int64_t value);
 
 /**
- * s_log_uint is used to add an unsigned integer value
- * to the log entry.
+ * s_log_uint is used to add an unsigned integer value to the log entry.
  */
 struct s_log_field_t*
 s_log_uint(const char *key, const unsigned int value);
 
 /**
- * s_log_uint8 is used to add a 8 bit integer
- * value to the log entry.
+ * s_log_uint8 is used to add a 8 bit integer value to the log entry.
  */
 struct s_log_field_t*
 s_log_uint8(const char *key, const uint8_t value);
 
 /**
- * s_log_uint16 is used to add a 16 bit integer
- * value to the log entry.
+ * s_log_uint16 is used to add a 16 bit integer value to the log entry.
  */
 struct s_log_field_t*
 s_log_uint16(const char *key, const uint16_t value);
 
 /**
- * s_log_uint32 is used to add a 32 bit integer
- * value to the log entry.
+ * s_log_uint32 is used to add a 32 bit integer value to the log entry.
  */
 struct s_log_field_t*
 s_log_uint32(const char *key, const uint32_t value);
 
 /**
- * s_log_uint64 is used to add a 64 bit integer
- * value to the log entry.
+ * s_log_uint64 is used to add a 64 bit integer value to the log entry.
  */
 struct s_log_field_t*
 s_log_uint64(const char *key, const uint64_t value);
 
 /**
- * s_log_double is used to add a double to the
- * log entry.
+ * s_log_float is used to add a float to the log entry.
+ */
+struct s_log_field_t*
+s_log_float(const char *key, const float value);
+
+/**
+ * s_log_double is used to add a double to the log entry.
  */
 struct s_log_field_t*
 s_log_double(const char *key, const double value);
 
 /**
- * s_log_string is used to add a string to the
- * log entry.
+ * s_log_string is used to add a string to the log entry.
  */
 struct s_log_field_t*
 s_log_string(const char *key, const char *value);
@@ -131,23 +128,25 @@ enum {
 };
 
 /**
- * s_log_init initializes the logger and sets up
- * where the logger writes to.
+ * s_log_init initializes the logger and sets up where the logger writes to.
  */
 void
 s_log_init(FILE *out);
 
 /**
- * reallog provides the functionality of the logger. Returns
- * the number os bytes written.
+ * reallog provides the functionality of the logger. Returns the number os
+ * bytes written.
  */
 void
 reallog(char *l, ...);
 
 /**
- * s_log is the main entry point for adding data
- * to the logger to create log entries
+ * s_log is the main entry point for adding data to the logger to create log
+ * entries.
  */
 #define s_log(l, ...) ({ reallog(l, __VA_ARGS__, NULL); })
 
 #endif /** end _S_LOGGER_H */
+#ifdef __cplusplus
+}
+#endif
