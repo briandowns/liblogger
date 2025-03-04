@@ -98,13 +98,10 @@ s_log_field_new(const char *key)
 {
     struct s_log_field_t *field =
         (struct s_log_field_t *)calloc(1, sizeof(s_log_field_t));
-    if (field == NULL) {
-        perror("unable to allocate memory for new field");
-        return NULL;
-    }
 
-    field->key = (char *)calloc(1, strlen(key)+1);
-    strcpy(field->key, key);
+    size_t key_len = strlen(key)+1;
+    field->key = (char *)calloc(key_len, sizeof(char));
+    memcpy(field->key, key, key_len);
 
     return field;
 }
@@ -253,8 +250,10 @@ s_log_string(const char *key, const char *value)
 {
     struct s_log_field_t *field = s_log_field_new(key);
     field->type = S_LOG_STRING;
-    field->string_value = (char *)calloc(1, strlen(value) + 1);
-    strcpy(field->string_value, value);
+
+    size_t val_len = strlen(value)+1;
+    field->string_value = (char *)calloc(val_len, sizeof(char));
+    memcpy(field->string_value, value, val_len);
 
     return field;
 }
