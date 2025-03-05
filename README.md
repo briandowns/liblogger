@@ -12,7 +12,7 @@ And `float`, `double`, and `string`.
 
 The supported log levels are: `trace`, `debug`, `info`, `warn`, `error`, `fatal`, 
 
-For a successful log entry to be made, a key and a value need to be provided. If no value is provided, that field will not be logged.
+For a successful log entry to be made, a key and a value need to be provided. If no value is provided, that field will not be logged. Memory is freed after the log entry is written.
 
 ## Example 
 

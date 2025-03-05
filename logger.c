@@ -97,10 +97,10 @@ static struct s_log_field_t*
 s_log_field_new(const char *key)
 {
     struct s_log_field_t *field =
-        (struct s_log_field_t *)calloc(1, sizeof(s_log_field_t));
+        (struct s_log_field_t*)calloc(1, sizeof(s_log_field_t));
 
     size_t key_len = strlen(key)+1;
-    field->key = (char *)calloc(key_len, sizeof(char));
+    field->key = (char*)calloc(key_len, sizeof(char));
     memcpy(field->key, key, key_len);
 
     return field;
@@ -252,7 +252,7 @@ s_log_string(const char *key, const char *value)
     field->type = S_LOG_STRING;
 
     size_t val_len = strlen(value)+1;
-    field->string_value = (char *)calloc(val_len, sizeof(char));
+    field->string_value = (char*)calloc(val_len, sizeof(char));
     memcpy(field->string_value, value, val_len);
 
     return field;
@@ -269,11 +269,6 @@ reallog(char* l, ...)
     json_t *root = json_object();
     json_object_set_new(root, "level", json_string(l));
     json_object_set_new(root, "timestamp", json_integer(now));
-
-    if (strcmp(l, S_LOG_DEBUG) == 0) {
-        json_object_set_new(root, "file", json_string(__FILE__));
-        json_object_set_new(root, "line", json_integer(__LINE__));
-    }
 
     va_start(ap, l);
 
