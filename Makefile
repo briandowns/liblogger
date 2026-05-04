@@ -1,6 +1,6 @@
-CC = cc
+CC = clang
 
-CFLAGS  = -std=c99 -O3 -Wall 
+CFLAGS  = -std=c99 -fPIC -O3 -Wall 
 LDFLAGS = -ljansson
 
 NAME = liblogger
@@ -12,24 +12,22 @@ INCDIR := /usr/local/include
 LIBDIR  = /usr/local/lib
 
 ifeq ($(UNAME_S),Linux)
-$(NAME).so:
-	$(CC) -shared -o $@ $(CFLAGS) $(LDFLAGS)
+$(NAME).so: clean
 endif
 ifeq ($(UNAME_S),Darwin)
-$(NAME).dylib:
-	$(CC) $(CFLAGS) $(LDFLAGS) -c -dynamiclib -o $@ 
+$(NAME).dylib: clean
+	$(CC) $(CFLAGS) $(LDFLAGS) -c -dynamiclib -o $@ logger.c
+else
+	$(CC) -shared -o $@ logger.c $(CFLAGS) $(LDFLAGS)
 endif
 
 .PHONY: install
 install: 
 	cp logger.h $(INCDIR)
-ifeq ($(UNAME_S),Linux)
-	cp logger.h $(INCDIR)
-	cp $(NAME).so $(LIBDIR)
-endif
 ifeq ($(UNAME_S),Darwin)
-	cp logger.h $(INCDIR)
 	cp $(NAME).dylib $(LIBDIR)
+else
+	cp $(NAME).so $(LIBDIR)
 endif
 
 .PHONY: uninstall
