@@ -1,8 +1,5 @@
 CC = clang
 
-CFLAGS  = -std=c99 -fPIC -O3 -Wall 
-LDFLAGS = -ljansson
-
 NAME = liblogger
 
 UNAME_S := $(shell uname -s)
@@ -11,13 +8,14 @@ UNAME_S := $(shell uname -s)
 INCDIR := /usr/local/include
 LIBDIR  = /usr/local/lib
 
-ifeq ($(UNAME_S),Linux)
-$(NAME).so: clean
-endif
+CFLAGS  = -I$(INCDIR) -std=c99 -fPIC -O3 -Wall 
+LDFLAGS = -L$(LIBDIR)-ljansson
+
 ifeq ($(UNAME_S),Darwin)
 $(NAME).dylib: clean
-	$(CC) $(CFLAGS) $(LDFLAGS) -c -dynamiclib -o $@ logger.c
+	$(CC) -c -dynamiclib -o $@ logger..c $(CFLAGS) $(LDFLAGS)
 else
+$(NAME).so: clean
 	$(CC) -shared -o $@ logger.c $(CFLAGS) $(LDFLAGS)
 endif
 
